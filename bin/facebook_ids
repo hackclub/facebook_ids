@@ -1,0 +1,52 @@
+#!/usr/bin/env node
+
+var program = require('commander');
+var request = require('superagent');
+var url = require('url');
+var Q = require('q');
+
+program
+  .version('0.0.1')
+  .parse(process.argv);
+
+readLines(process.stdin, function (line) {
+  Q.Promise(function (resolve, reject, notify) {
+    var parsed = url.parse(line, true);
+
+    if (parsed.pathname == '/profile.php') {
+      return resolve(parsed.query.id);
+    }
+
+    request.get('https://graph.facebook.com' + parsed.pathname, function (res) {
+      if (!JSON.parse(res.text).id) {
+        console.log('https://graph.facebook.com' + parsed.pathname);
+        console.log(JSON.parse(res.text));
+      }
+      return resolve(JSON.parse(res.text).id);
+    });
+  })
+  .then(function (id) {
+    console.log(id);
+  });
+});
+
+function readLines(input, func) {
+  var remaining = '';
+
+  input.on('data', function (data) {
+    remaining += data;
+    var index = remaining.indexOf('\n');
+    while (index > -1) {
+      var line = remaining.substring(0, index);
+      remaining = remaining.substring(index + 1);
+      func(line);
+      index = remaining.indexOf('\n');
+    }
+  });
+
+  input.on('end', function () {
+    if (remaining.length > 0) {
+      func(remaining);
+    }
+  });
+}

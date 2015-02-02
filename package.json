@@ -1,0 +1,26 @@
+{
+  "name": "facebook_ids",
+  "version": "0.0.1",
+  "description": "given a stream of facebook profile urls, output a stream of facebook user ids",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/hackedu/facebook_ids"
+  },
+  "author": "Zach Latta <zach@zachlatta.com> (http://zachlatta.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hackedu/facebook_ids/issues"
+  },
+  "bin": {
+    "messenger_merge": "./bin/messenger_merge"
+  },
+  "dependencies": {
+    "commander": "^2.6.0",
+    "q": "^1.1.2",
+    "superagent": "^0.21.0"
+  }
+}
